@@ -1,0 +1,38 @@
+name: Render SVD animation
+on:
+  workflow_dispatch:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libcairo2-dev libpango1.0-dev pkg-config texlive-latex-extra texlive-fonts-recommended texlive-science dvisvgm fonts-noto-cjk
+      - name: Install Python dependencies
+        run: python -m pip install -r '奇异值分解/requirements.txt'
+      - name: Select available Chinese font on Linux
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('奇异值分解/奇异值分解科普.py')
+          s = p.read_text(encoding='utf-8')
+          old = "ZH_FONT = 'Kaiti SC'"
+          assert old in s, 'The source font setting changed; update this workflow.'
+          p.write_text(s.replace(old, "ZH_FONT = 'Noto Serif CJK SC'", 1), encoding='utf-8')
+          PY
+      - name: Render 1080P60 video
+        working-directory: 奇异值分解
+        run: python -m manim -qh '奇异值分解科普.py' SVDExplainer --media_dir ./media
+      - name: Upload video artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: svd-animation-1080p60
+          path: 奇异值分解/media/videos/奇异值分解科普/1080p60/SVDExplainer.mp4
+          if-no-files-found: error

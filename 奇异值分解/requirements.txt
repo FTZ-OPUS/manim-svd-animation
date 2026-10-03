@@ -1,0 +1,4 @@
+manim==0.21.0
+numpy>=1.26
+Pillow>=10
+av>=13

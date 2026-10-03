@@ -1,0 +1,10 @@
+.DS_Store
+**/__pycache__/
+*.pyc
+**/media/
+**/media-preview/
+**/media-final-v2/
+**/升级预览/
+**/升级高清/
+**/partial_movie_files/
+**/Tex/

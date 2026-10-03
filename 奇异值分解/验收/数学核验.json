@@ -1,0 +1,8 @@
+{
+  "image_reconstruction_max_error": 1.865174681370263e-14,
+  "rank_1_error": 63.03023738304927,
+  "rank_4_error": 41.82085064552301,
+  "rank_16_error": 21.241736693591797,
+  "rank_64_error": 6.791757175262888,
+  "geometry_and_left_right_eigen_equations": "PASS"
+}
